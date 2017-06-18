@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
 .container{
 	position: absolute;
 	left: 50%;
@@ -8,4 +10,14 @@
 
 canvas{
 	background-color: #232323;
+}
+
+#start, #score{
+	width: 500px;
+	text-align: center;
+	background-color: #EF2D56;
+	color: #ffffff;
+	font-size: 50px;
+	font-family: 'Oswald', sans-serif;
+	cursor: pointer;
 }

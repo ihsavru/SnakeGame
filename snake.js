@@ -6,6 +6,7 @@ var snake = [
 	y: 0}
 ]
 var foodx = 50,foody =50;
+
 function startGame(){
     var canvas = document.getElementById('canvas'); 
     var ctx = canvas.getContext('2d');
@@ -13,6 +14,7 @@ function startGame(){
     clearInterval(draw);
 	drawFood();
     score=0;
+    printScore();
     snake = [
     {x: 0,
     y: 0}
@@ -38,6 +40,12 @@ function drawFood(){
     ctx.fillStyle = '#48cec1';
     foodx = Math.floor(Math.random()*24)*20;
     foody = Math.floor(Math.random()*24)*20;
+
+    //checks if the food is created where the snake is and then recreates food
+    for(var i=0;i<length;i++){
+        if(snake[i].x === foodx && snake[i].y === foody)
+            drawFood();
+    }
     ctx.fillRect(foodx,foody,20,20);
 }
 
@@ -47,14 +55,17 @@ function moveSnake(X,Y) {
 	for (var i = 0; i < length; i++) {
 		ctx.clearRect(snake[i].x,snake[i].y,20,20);
 	}
+    //adds a square object at the head of snake
 	snake.unshift({x: snake[0].x+20*X, y: snake[0].y+20*Y});
+    //removes the last object
 	snake.pop();
-    checkFood();
+    checkCollision();
     drawSnake(X,Y);
 }
 
-function checkFood(){
-
+function checkCollision(){
+         
+        //checks if the snake collided with the food i.e score increases
         if(snake[0].x === foodx && snake[0].y === foody){
             if(length >= 2){
                 var a = snake[length-1].x - snake[length-2].x;
@@ -62,14 +73,33 @@ function checkFood(){
             }
             snake.push({x: snake[length-1].x+a, y: snake[length-1].y+b});
             length++;
+            score++;
+            printScore();
             drawFood();
         }
-
+        
+        //checks if the snake collided with the canvas border i.e game over
         if(snake[0].x === 500 || snake[0].y === 500 || snake[0].x === -20 || snake[0].y === -20){
             alert("game over");
+            clearInterval(draw);
             startGame();
         }
+        
+        //check if the snake collided with itself i.e. game over
+        for(var i=3;i<length;i++){
+            if(snake[0].x === snake[i].x && snake[0].y === snake[i].y){
+                alert("game over");
+                clearInterval(draw);
+                startGame();
+            }
+
+        }
 }
+
+function printScore(){
+        document.getElementById('score').innerHTML = score;
+     }
+
 $(function(){
 	$('#start').on('click', function(){
 		startGame();
@@ -78,9 +108,8 @@ $(function(){
         var ctx = canvas.getContext('2d');
         ctx.fillStyle = '#cccccc';
         ctx.fillRect(snake[0].x,snake[0].y,20,20);
-
 	})
-	
+
 	document.onkeydown = function(e) {
     switch (e.keyCode) {
         case 37:
