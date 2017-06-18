@@ -6,7 +6,7 @@ var snake = [
 	y: 0}
 ]
 var foodx = 50,foody =50;
-
+var key ='';
 function startGame(){
     var canvas = document.getElementById('canvas'); 
     var ctx = canvas.getContext('2d');
@@ -113,20 +113,33 @@ $(function(){
 	document.onkeydown = function(e) {
     switch (e.keyCode) {
         case 37:
-            clearInterval(draw);
-            draw = setInterval(function(){moveSnake(-1,0);},100);
+            if(key !== 'r'){
+                clearInterval(draw);
+                draw = setInterval(function(){moveSnake(-1,0);},100);
+                key = 'l';
+                
+            }
             break;
         case 38:
-            clearInterval(draw);
-            draw = setInterval(function(){moveSnake(0,-1);}, 100);
+            if(key!== 'd'){
+                clearInterval(draw);
+                draw = setInterval(function(){moveSnake(0,-1);}, 100);
+                key = 'u';
+            }
             break;
         case 39:
-            clearInterval(draw);
-            draw = setInterval(function(){moveSnake(1,0);},100);
+            if(key!== 'l'){
+                clearInterval(draw);
+                draw = setInterval(function(){moveSnake(1,0);},100);
+                key = 'r';
+            }
             break;
         case 40:
-            clearInterval(draw);
-            draw = setInterval(function(){moveSnake(0,1);},100);
+            if(key!== 'u'){
+                clearInterval(draw);
+                draw = setInterval(function(){moveSnake(0,1);},100);
+                key = 'd';
+            }
             break;
     }
 };
